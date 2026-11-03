@@ -17,6 +17,19 @@ Story Input & Management
     Manage official League of Legends stories associated with each champion.
     You can register new stories, review existing records, and update story information.
   </p>
+
+  <div class="champion-list">
+    {% for champion in champions %}
+      <div class="champion-item">
+        <span class="champion-name">
+          {{ champion.name_en }}
+        </span>
+        <span class="champion-name-ja">
+          {{ champion.name_ja }}
+        </span>
+      </div>
+    {% endfor %}
+  </div>
 </div>
 
 <div class="panel">
