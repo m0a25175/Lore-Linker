@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+Story Input & Management | Lore Linker
+{% endblock %}
+
+{% block page_title %}
+Story Input & Management
+{% endblock %}
+
+{% block content %}
+
+<div class="panel">
+  <h3 class="panel-title">Champion Stories</h3>
+
+  <p>
+    Manage official League of Legends stories associated with each champion.
+    You can register new stories, review existing records, and update story information.
+  </p>
+</div>
+
+<div class="panel">
+  <h3 class="panel-title">Story Registration</h3>
+
+  <p>
+    Add an official story by entering its Riot Universe URL.
+    If automatic retrieval is unavailable, you will be able to enter the story manually.
+  </p>
+</div>
+
+<div class="panel">
+  <h3 class="panel-title">Registered Stories</h3>
+
+  <p>
+    Review stories already registered in the database.
+    You will be able to select a champion to view, edit, or delete its stories.
+  </p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,360 @@
+/* ==============================
+    Color Palette
+============================== */
+
+:root {
+    --background: #101827;
+    --sidebar: #141F34;
+    --panel: #1B2D4D;
+    --panel-hover: #263B5B;
+
+    --accent: #D6B96E;
+    --accent-hover: #E6CB86;
+
+    --text: #E2E7EF;
+    --muted-text: #9BA9BC;
+
+    --border: #34435B;
+    --border-highlight: #756744;
+}
+
+/* ==============================
+    Global Settings
+============================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            135deg,
+            #101827 0%,
+            #121E33 55%,
+            #101827 100%
+        );
+
+    color: var(--text);
+
+    font-family:
+        "Segoe UI",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+}
+
+/* ==============================
+    App Layout
+============================== */
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ==============================
+    Sidebar
+============================== */
+
+.sidebar {
+    width: 260px;
+    min-width: 260px;
+    min-height: 100vh;
+
+    padding: 30px 18px;
+
+    background: linear-gradient(
+        180deg,
+        #17243A 0%,
+        #141F34 100%
+    );
+
+    border-right: 1px solid var(--border);
+}
+
+.sidebar-header {
+    padding: 0 12px 28px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.app-logo {
+    margin: 0;
+
+    color: var(--accent);
+
+    font-family: Georgia, serif;
+    font-size: 23px;
+    font-weight: 600;
+
+    letter-spacing: 2px;
+}
+
+.sidebar-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-top: 28px;
+}
+
+.nav-item {
+    display: block;
+
+    padding: 15px 14px;
+
+    border: 1px solid transparent;
+    border-radius: 6px;
+
+    color: var(--muted-text);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.nav-item:hover {
+    background-color: rgba(214, 185, 110, 0.07);
+
+    color: var(--text);
+}
+
+.nav-item.active {
+    background: linear-gradient(
+        90deg,
+        rgba(214, 185, 110, 0.15),
+        rgba(214, 185, 110, 0.04)
+    );
+
+    border-color: rgba(214, 185, 110, 0.25);
+    border-left: 3px solid var(--accent);
+
+    color: var(--accent-hover);
+}
+
+/* ==============================
+    Main Content
+============================== */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+
+    padding: 36px 44px;
+}
+
+.main-header {
+    position: relative;
+
+    padding-bottom: 22px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.main-header::after {
+    content: "";
+
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+
+    width: 90px;
+    height: 2px;
+
+    background-color: var(--accent);
+}
+
+.page-title {
+    margin: 0;
+
+    color: var(--text);
+
+    font-family: Georgia, serif;
+    font-size: 27px;
+    font-weight: 500;
+
+    letter-spacing: 0.3px;
+}
+
+.content-area {
+    padding-top: 30px;
+}
+
+/* ==============================
+    Common Panels
+============================== */
+
+.panel {
+    padding: 24px;
+
+    background: linear-gradient(
+        145deg,
+        #20334F,
+        #1B2D4D
+    );
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+.panel-title {
+    margin: 0 0 18px;
+
+    color: var(--accent);
+
+    font-family: Georgia, serif;
+    font-size: 19px;
+    font-weight: 500;
+}
+
+/* ==============================
+    Buttons
+============================== */
+
+.button-primary {
+    padding: 11px 20px;
+
+    background: linear-gradient(
+        135deg,
+        #D6B96E,
+        #B99A51
+    );
+
+    border: 1px solid #E2C77F;
+    border-radius: 5px;
+
+    color: #172033;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.button-primary:hover {
+    background: linear-gradient(
+        135deg,
+        #E6CB86,
+        #D0B36A
+    );
+
+    box-shadow: 0 4px 14px rgba(214, 185, 110, 0.18);
+
+    transform: translateY(-1px);
+}
+
+/* ==============================
+    Responsive Layout
+============================== */
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 210px;
+        min-width: 210px;
+        padding: 24px 12px;
+    }
+
+    .main-content {
+        padding: 28px 22px;
+    }
+
+    .app-logo {
+        font-size: 19px;
+    }
+
+    .page-title {
+        font-size: 23px;
+    }
+}
+
+@media (max-width: 540px) {
+    .app-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        min-height: auto;
+
+        padding: 18px;
+
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-header {
+        padding-bottom: 16px;
+    }
+
+    .sidebar-navigation {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+
+        margin-top: 16px;
+    }
+
+    .nav-item {
+        padding: 10px;
+
+        font-size: 12px;
+    }
+
+    .main-content {
+        padding: 22px 16px;
+    }
+
+    .page-title {
+        font-size: 21px;
+    }
+}
+
+/* ==============================
+    Story Management Layout
+============================== */
+
+.content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ==============================
+    Panel Text
+============================== */
+
+.panel p {
+    margin: 0;
+    color: var(--muted-text);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* ==============================
+    Panel Heading Spacing
+============================== */
+
+.panel-title {
+    margin-bottom: 14px;
+    line-height: 1.4;
+}

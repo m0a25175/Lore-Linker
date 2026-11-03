@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}Lore Linker{% endblock %}</title>
+
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}"
+  >
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <div class="sidebar-header">
+        <h1 class="app-logo">LORE LINKER</h1>
+      </div>
+
+      <nav class="sidebar-navigation">
+        <a href="{{ url_for('story') }}"
+          class="nav-item {% if request.endpoint == 'story' %}active{% endif %}">
+            Story Input &amp; Management
+        </a>
+
+        <a href="{{ url_for('dictionary') }}"
+          class="nav-item {% if request.endpoint == 'dictionary' %}active{% endif %}">
+            Dictionary Management
+        </a>
+
+        <a href="{{ url_for('network') }}"
+          class="nav-item {% if request.endpoint == 'network' %}active{% endif %}">
+            Network Analysis
+        </a>
+      </nav>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <header class="main-header">
+        <h2 class="page-title">
+          {% block page_title %}Story Input &amp; Management{% endblock %}
+        </h2>
+      </header>
+
+      <section class="content-area">
+        {% block content %}
+        {% endblock %}
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

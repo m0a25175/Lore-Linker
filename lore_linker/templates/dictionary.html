@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dictionary Management | Lore Linker
+{% endblock %}
+
+{% block page_title %}
+Dictionary Management
+{% endblock %}
+
+{% block content %}
+
+<div class="panel">
+  <h3 class="panel-title">Registered Terms</h3>
+
+  <p>
+    Manage terms extracted from official League of Legends stories.
+    You can review, edit, and delete registered terms.
+  </p>
+</div>
+
+<div class="panel">
+  <h3 class="panel-title">Add New Term</h3>
+
+  <p>
+    Add a new term to the dictionary manually.
+    Registered terms will be used during story analysis.
+  </p>
+</div>
+
+<div class="panel">
+  <h3 class="panel-title">Dictionary Overview</h3>
+
+  <p>
+    The total number of registered terms will be displayed here.
+  </p>
+</div>
+
+{% endblock %}

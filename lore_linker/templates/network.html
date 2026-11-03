@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+Network Analysis | Lore Linker
+{% endblock %}
+
+{% block page_title %}
+Network Analysis
+{% endblock %}
+
+{% block content %}
+
+<div class="panel">
+  <h3 class="panel-title">Champion Selection</h3>
+
+  <p>
+    Select the champions whose stories you want to analyze.
+    All eligible registered stories associated with the selected champions will be included.
+  </p>
+</div>
+
+<div class="panel">
+  <h3 class="panel-title">Analysis Settings</h3>
+
+  <p>
+    Configure the relationship score threshold before running the analysis.
+  </p>
+</div>
+
+<div class="panel">
+  <h3 class="panel-title">Relationship Network</h3>
+
+  <p>
+    The champion co-occurrence network will be displayed here after analysis.
+  </p>
+</div>
+
+{% endblock %}
