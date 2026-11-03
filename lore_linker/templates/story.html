@@ -39,6 +39,63 @@ Story Input & Management
     Add an official story by entering its Riot Universe URL.
     If automatic retrieval is unavailable, you will be able to enter the story manually.
   </p>
+
+  <div class="story-url-form">
+    <label for="story-url">Riot Universe URL</label>
+
+    <input
+      type="url"
+      id="story-url"
+      name="story_url"
+      placeholder="https://universe.leagueoflegends.com/en_US/story/champion/..."
+      autocomplete="url"
+      required
+    >
+
+    <button
+      type="button"
+      id="fetch-story-button"
+      class="button-primary"
+    >
+      Fetch Story
+    </button>
+
+    <div
+      id="story-fetch-status"
+      class="story-fetch-status"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </div>
+</div>
+
+<div
+  id="story-preview"
+  class="panel story-preview"
+  hidden
+>
+  <h3 class="panel-title">Story Preview</h3>
+
+  <div class="story-preview-title">
+    <span class="preview-label">Story Title</span>
+    <h4 id="preview-story-title"></h4>
+  </div>
+
+  <div class="story-preview-champion">
+    <span class="preview-label">Featured Champion</span>
+    <div id="preview-champion-list"></div>
+
+    <select
+      id="preview-champion-select"
+      aria-label="Select a champion"
+    >
+    </select>
+  </div>
+
+  <div class="story-preview-body">
+    <span class="preview-label">Biography</span>
+    <div id="preview-story-body"></div>
+  </div>
 </div>
 
 <div class="panel">
@@ -50,4 +107,11 @@ Story Input & Management
   </p>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script
+  src="{{ url_for('static', filename='js/story.js') }}"
+  defer
+></script>
 {% endblock %}

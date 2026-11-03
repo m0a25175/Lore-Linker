@@ -358,3 +358,158 @@ body {
     margin-bottom: 14px;
     line-height: 1.4;
 }
+
+/* ==============================
+    Story URL Form
+============================== */
+
+.story-url-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+.story-url-form label {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.story-url-form input {
+    width: 100%;
+    max-width: 700px;
+
+    padding: 12px 14px;
+
+    background-color: #111D31;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+
+    color: var(--text);
+    font-size: 14px;
+}
+
+.story-url-form input::placeholder {
+    color: #74839A;
+}
+
+.story-url-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(214, 185, 110, 0.12);
+}
+
+.story-url-form button {
+    min-width: 130px;
+}
+
+/* ==============================
+    Story Fetch Status
+============================== */
+
+.story-fetch-status {
+    min-height: 20px;
+
+    color: var(--muted-text);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.story-fetch-status.success {
+    color: #8FC9A3;
+}
+
+.story-fetch-status.error {
+    color: #E58B8B;
+}
+
+.story-fetch-status.loading {
+    color: var(--accent);
+}
+
+/* ==============================
+    Story Preview
+============================== */
+
+.story-preview[hidden] {
+    display: none;
+}
+
+.story-preview-title,
+.story-preview-champion,
+.story-preview-body {
+    margin-top: 22px;
+}
+
+.preview-label {
+    display: block;
+    margin-bottom: 10px;
+
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.story-preview-title h4 {
+    margin: 0;
+
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 500;
+}
+
+#preview-champion-list {
+    color: var(--text);
+    font-size: 14px;
+}
+
+#preview-story-body {
+    padding: 18px;
+
+    background-color: rgba(16, 24, 39, 0.55);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.9;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* ==============================
+    Champion Selection
+============================== */
+
+#preview-champion-select {
+    width: 100%;
+    max-width: 360px;
+
+    margin-top: 14px;
+    padding: 11px 14px;
+
+    background-color: #111D31;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+
+    color: var(--text);
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+#preview-champion-select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(214, 185, 110, 0.12);
+}
+
+#preview-champion-select option {
+    background-color: #1B2D4D;
+    color: var(--text);
+}
