@@ -19,16 +19,17 @@ Story Input & Management
   </p>
 
   <div class="champion-list">
-    {% for champion in champions %}
-      <div class="champion-item">
-        <span class="champion-name">
-          {{ champion.name_en }}
-        </span>
-        <span class="champion-name-ja">
-          {{ champion.name_ja }}
-        </span>
-      </div>
-    {% endfor %}
+    <label for="champion-select">Select Champion</label>
+
+    <select id="champion-select">
+      <option value="">All Champions</option>
+
+      {% for champion in champions %}
+        <option value="{{ champion.champion_id }}">
+          {{ champion.name_en }} ({{ champion.name_ja }})
+        </option>
+      {% endfor %}
+    </select>
   </div>
 </div>
 
@@ -96,6 +97,30 @@ Story Input & Management
     <span class="preview-label">Biography</span>
     <div id="preview-story-body"></div>
   </div>
+  <div class="story-registration-actions">
+    <button
+      type="button"
+      id="register-story-button"
+      class="button-primary"
+    >
+      Register Story
+    </button>
+    <button
+      type="button"
+      id="register-duplicate-story-button"
+      class="button-danger"
+      hidden
+    >
+      Register Anyway
+    </button>
+    <div id="duplicate-story-info" class="story-fetch-status" hidden></div>
+    <div
+      id="story-registration-status"
+      class="story-fetch-status"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </div>
 </div>
 
 <div class="panel">
@@ -103,8 +128,87 @@ Story Input & Management
 
   <p>
     Review stories already registered in the database.
-    You will be able to select a champion to view, edit, or delete its stories.
+    Select a champion to filter the registered stories.
   </p>
+
+  <div
+    id="registered-stories-status"
+    class="story-fetch-status"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+  <div
+    id="registered-stories-list"
+    class="registered-stories-list"
+  ></div>
+
+  <div
+    id="story-edit-form-container"
+    class="story-edit-form-container"
+    hidden
+  >
+    <h4>Edit Story</h4>
+
+    <input
+      type="hidden"
+      id="edit-story-id"
+    >
+
+    <input
+      type="hidden"
+      id="edit-story-champion"
+    >
+
+    <input
+      type="hidden"
+      id="edit-story-source-url"
+    >
+
+    <input
+      type="hidden"
+      id="edit-story-registration-method"
+    >
+
+    <label for="edit-story-title">Story Title</label>
+    <input
+      type="text"
+      id="edit-story-title"
+      required
+    >
+
+    <label for="edit-story-body">Story Body</label>
+    <textarea
+      id="edit-story-body"
+      rows="12"
+      required
+    ></textarea>
+
+    <div class="story-edit-actions">
+      <button
+        type="button"
+        id="save-story-edit-button"
+        class="button-primary"
+      >
+        Save Changes
+      </button>
+
+      <button
+        type="button"
+        id="cancel-story-edit-button"
+        class="button-secondary"
+      >
+        Cancel
+      </button>
+    </div>
+
+    <div
+      id="story-edit-status"
+      class="story-fetch-status"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </div>
 </div>
 
 {% endblock %}

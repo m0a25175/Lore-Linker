@@ -513,3 +513,135 @@ body {
     background-color: #1B2D4D;
     color: var(--text);
 }
+
+/* Registered Stories */
+
+.registered-stories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.registered-story-item {
+    padding: 18px;
+    background: var(--sidebar);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.registered-story-item h4 {
+    margin: 0 0 12px;
+    color: var(--text);
+    font-size: 16px;
+}
+
+.registered-story-item p {
+    margin: 6px 0;
+    color: var(--muted-text);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Story Actions */
+
+.story-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.button-secondary,
+.button-danger {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.button-secondary {
+    color: var(--text);
+    background: var(--panel-hover);
+    border: 1px solid var(--border);
+}
+
+.button-secondary:hover {
+    background: var(--border);
+}
+
+.button-danger {
+    color: #FFFFFF;
+    background: #8B3A42;
+    border: 1px solid #A84B54;
+}
+
+.button-danger:hover {
+    background: #A84B54;
+}
+
+/* Story Edit Form */
+
+.story-edit-form-container {
+    margin-top: 24px;
+    padding: 24px;
+
+    background: var(--panel);
+    border: 1px solid var(--border-highlight);
+    border-radius: 10px;
+}
+
+.story-edit-form-container h4 {
+    margin: 0 0 22px;
+    color: var(--accent);
+    font-size: 17px;
+}
+
+.story-edit-form-container label {
+    display: block;
+    margin: 18px 0 8px;
+
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.story-edit-form-container input[type="text"],
+.story-edit-form-container textarea {
+    width: 100%;
+    padding: 12px 14px;
+
+    background: #111D31;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+
+    box-sizing: border-box;
+}
+
+.story-edit-form-container textarea {
+    min-height: 240px;
+    resize: vertical;
+}
+
+.story-edit-form-container input:focus,
+.story-edit-form-container textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(214, 185, 110, 0.12);
+}
+
+.story-edit-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.story-edit-form-container[hidden] {
+    display: none;
+}
