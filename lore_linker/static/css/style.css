@@ -645,3 +645,46 @@ body {
 .story-edit-form-container[hidden] {
     display: none;
 }
+
+.manual-story-form {
+    margin-top: 20px;
+}
+
+.manual-story-form label {
+    display: block;
+    margin: 18px 0 8px;
+
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.manual-story-form input[type="text"],
+.manual-story-form select,
+.manual-story-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+
+    background: #111D31;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+
+    box-sizing: border-box;
+}
+
+.manual-story-form textarea {
+    min-height: 240px;
+    resize: vertical;
+}
+
+.manual-story-form input:focus,
+.manual-story-form select:focus,
+.manual-story-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(214, 185, 110, 0.12);
+}

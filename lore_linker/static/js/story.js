@@ -39,9 +39,18 @@ const previewChampionSelect = document.getElementById("preview-champion-select")
 const previewStoryBody = document.getElementById("preview-story-body");
 const duplicateStoryInfo = document.getElementById("duplicate-story-info");
 
+const manualStoryChampionSelect = document.getElementById("manual-story-champion");
+const manualStoryTitleInput = document.getElementById("manual-story-title");
+const manualStoryBodyInput = document.getElementById("manual-story-body");
+const registerManualStoryButton = document.getElementById("register-manual-story-button");
+const registerManualDuplicateStoryButton = document.getElementById("register-manual-duplicate-story-button");
+const manualDuplicateStoryInfo = document.getElementById("manual-duplicate-story-info");
+const manualStoryRegistrationStatus = document.getElementById("manual-story-registration-status");
+
 let fetchedBiographies = [];
 let fetchedStoryData = null;
 let duplicateStories = [];
+let manualDuplicateStories = [];
 
 function showFetchStatus(message, type = "") {
     storyFetchStatus.textContent = message;
@@ -49,6 +58,15 @@ function showFetchStatus(message, type = "") {
 
     if (type) {
     storyFetchStatus.classList.add(type);
+    }
+}
+
+function showManualStoryRegistrationStatus(message, type = "") {
+    manualStoryRegistrationStatus.textContent = message;
+    manualStoryRegistrationStatus.className = "story-fetch-status";
+
+    if (type) {
+        manualStoryRegistrationStatus.classList.add(type);
     }
 }
 
@@ -447,6 +465,95 @@ async function registerStory(allowDuplicate = false) {
     }
 }
 
+async function registerManualStory(allowDuplicate = false) {
+    const championName = manualStoryChampionSelect.value;
+    const title = manualStoryTitleInput.value.trim();
+    const body = manualStoryBodyInput.value.trim();
+
+    if (!championName || !title || !body) {
+        showManualStoryRegistrationStatus(
+            "Please select a champion and enter both the title and story body.",
+            "error"
+        );
+        return;
+    }
+
+    registerManualStoryButton.disabled = true;
+    registerManualDuplicateStoryButton.disabled = true;
+
+    showManualStoryRegistrationStatus(
+        "Registering story...",
+        "loading"
+    );
+
+    try {
+        const response = await fetch("/api/stories", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                champion_name: championName,
+                title: title,
+                body: body,
+                source_url: null,
+                registration_method: "manual",
+                allow_duplicate: allowDuplicate,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (response.status === 409 && data.duplicate) {
+            manualDuplicateStories = data.existing_stories || [];
+
+            manualDuplicateStoryInfo.textContent = manualDuplicateStories
+                .map((story) => {
+                    return `${story.title} (${story.champion_id})`;
+                })
+                .join(", ");
+
+            manualDuplicateStoryInfo.hidden = false;
+            registerManualDuplicateStoryButton.hidden = false;
+
+            showManualStoryRegistrationStatus(
+                "Duplicate story detected. Register anyway?",
+                "error"
+            );
+
+            return;
+        }
+
+    if (!response.ok || !data.success) {
+        throw new Error(
+            data.error || "Failed to register story."
+        );
+    }
+
+    manualDuplicateStories = [];
+    manualDuplicateStoryInfo.textContent = "";
+    manualDuplicateStoryInfo.hidden = true;
+    registerManualDuplicateStoryButton.hidden = true;
+
+    showManualStoryRegistrationStatus(
+        "Story registered successfully.",
+        "success"
+    );
+
+    manualStoryTitleInput.value = "";
+    manualStoryBodyInput.value = "";
+
+    await loadRegisteredStories();
+
+    } catch (error) {
+        showManualStoryRegistrationStatus(error.message, "error");
+
+    } finally {
+        registerManualStoryButton.disabled = false;
+        registerManualDuplicateStoryButton.disabled = false;
+    }
+}
+
 async function fetchStory() {
     const url = storyUrlInput.value.trim();
 
@@ -548,4 +655,14 @@ cancelStoryEditButton.addEventListener("click", () => {
 registerDuplicateStoryButton.addEventListener(
     "click",
     () => registerStory(true)
+);
+
+registerManualStoryButton.addEventListener(
+    "click",
+    () => registerManualStory(false)
+);
+
+registerManualDuplicateStoryButton.addEventListener(
+    "click",
+    () => registerManualStory(true)
 );

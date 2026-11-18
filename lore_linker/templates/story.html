@@ -70,6 +70,73 @@ Story Input & Management
   </div>
 </div>
 
+<div class="panel">
+  <h3 class="panel-title">Manual Story Registration</h3>
+  <p>
+    If automatic retrieval is unavailable, you can register a story manually.
+  </p>
+
+  <div class="manual-story-form">
+    <label for="manual-story-champion">Champion</label>
+    <select id="manual-story-champion" required>
+      <option value="">Select Champion</option>
+      {% for champion in champions %}
+        <option value="{{ champion.name_en }}">
+          {{ champion.name_en }} ({{ champion.name_ja }})
+        </option>
+      {% endfor %}
+    </select>
+
+    <label for="manual-story-title">Story Title</label>
+    <input
+      type="text"
+      id="manual-story-title"
+      placeholder="Enter story title"
+      required
+    >
+
+    <label for="manual-story-body">Story Body</label>
+    <textarea
+      id="manual-story-body"
+      rows="12"
+      placeholder="Paste the English story text here"
+      required
+    ></textarea>
+
+    <div class="story-registration-actions">
+      <button
+        type="button"
+        id="register-manual-story-button"
+        class="button-primary"
+      >
+        Register Story
+      </button>
+
+      <button
+        type="button"
+        id="register-manual-duplicate-story-button"
+        class="button-danger"
+        hidden
+      >
+        Register Anyway
+      </button>
+
+      <div
+        id="manual-duplicate-story-info"
+        class="story-fetch-status"
+        hidden
+      ></div>
+
+      <div
+        id="manual-story-registration-status"
+        class="story-fetch-status"
+        role="status"
+        aria-live="polite"
+      ></div>
+    </div>
+  </div>
+</div>
+
 <div
   id="story-preview"
   class="panel story-preview"
