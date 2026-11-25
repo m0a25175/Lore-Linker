@@ -1,39 +1,226 @@
 {% extends "base.html" %}
 
-{% block title %}
-Dictionary Management | Lore Linker
-{% endblock %}
-
-{% block page_title %}
-Dictionary Management
-{% endblock %}
+{% block title %}Dictionary Management | Lore Linker{% endblock %}
+{% block page_title %}Dictionary Management{% endblock %}
 
 {% block content %}
 
-<div class="panel">
-  <h3 class="panel-title">Registered Terms</h3>
+<!-- Dictionary Overview -->
+<div class="dictionary-overview">
+    <div class="dictionary-stat-card">
+        <span class="dictionary-stat-label">Total Terms</span>
+        <strong id="total-terms">0</strong>
+    </div>
 
-  <p>
-    Manage terms extracted from official League of Legends stories.
-    You can review, edit, and delete registered terms.
-  </p>
+    <div class="dictionary-stat-card">
+        <span class="dictionary-stat-label">Used Terms</span>
+        <strong id="used-terms">0</strong>
+    </div>
+
+    <div class="dictionary-stat-card">
+        <span class="dictionary-stat-label">Unused Terms</span>
+        <strong id="unused-terms">0</strong>
+    </div>
 </div>
 
-<div class="panel">
-  <h3 class="panel-title">Add New Term</h3>
+<!-- Add New Term -->
+<section class="panel">
+    <h3 class="panel-title">Add New Term</h3>
 
-  <p>
-    Add a new term to the dictionary manually.
-    Registered terms will be used during story analysis.
-  </p>
-</div>
+    <p>
+        Add a new term to the dictionary manually.
+        Registered terms will be used during story analysis.
+    </p>
 
-<div class="panel">
-  <h3 class="panel-title">Dictionary Overview</h3>
+    <form id="dictionary-add-form" class="dictionary-form">
+        <div class="dictionary-form-field">
+            <label for="new-term">Term</label>
+            <input
+                type="text"
+                id="new-term"
+                maxlength="200"
+                placeholder="Enter a term..."
+                required
+            >
+        </div>
 
-  <p>
-    The total number of registered terms will be displayed here.
-  </p>
-</div>
+        <button type="submit" class="button-primary">
+            Add Term
+        </button>
+    </form>
 
+    <div id="dictionary-add-status" class="dictionary-status"></div>
+</section>
+
+<!-- Dictionary Candidate Collection -->
+<section class="panel">
+    <h3 class="panel-title">Collect Dictionary Candidates</h3>
+
+    <p>
+        Extract candidate terms from registered champion information
+        and accepted English stories.
+        Candidates are not registered until you select and approve them.
+    </p>
+
+    <button
+        type="button"
+        id="collect-dictionary-candidates"
+        class="button-primary"
+    >
+        Collect Candidates
+    </button>
+
+    <div
+        id="dictionary-candidate-status"
+        class="dictionary-status"
+    ></div>
+
+    <div id="dictionary-candidate-container" hidden>
+        <div class="dictionary-list-header">
+            <div>
+                <h4>Candidate Terms</h4>
+                <p id="dictionary-candidate-count"></p>
+            </div>
+
+            <input
+                type="search"
+                id="dictionary-candidate-search"
+                class="dictionary-search"
+                placeholder="Search candidates..."
+                aria-label="Search candidate terms"
+            >
+        </div>
+
+        <div class="dictionary-candidate-actions">
+            <button
+                type="button"
+                id="select-all-candidates"
+                class="button-secondary"
+            >
+                Select All
+            </button>
+
+            <button
+                type="button"
+                id="clear-all-candidates"
+                class="button-secondary"
+            >
+                Clear All
+            </button>
+
+            <button
+                type="button"
+                id="register-selected-candidates"
+                class="button-primary"
+                disabled
+            >
+                Register Selected Terms
+            </button>
+        </div>
+
+        <div class="dictionary-table-wrapper">
+            <table class="dictionary-table">
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Term</th>
+                        <th>Occurrences</th>
+                        <th>Sources</th>
+                    </tr>
+                </thead>
+
+                <tbody id="dictionary-candidates-list"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Registered Terms -->
+<section class="panel">
+    <div class="dictionary-list-header">
+        <div>
+            <h3 class="panel-title">Registered Terms</h3>
+            <p>Review, edit, and delete registered dictionary terms.</p>
+        </div>
+
+        <input
+            type="search"
+            id="dictionary-search"
+            class="dictionary-search"
+            placeholder="Search terms..."
+            aria-label="Search dictionary terms"
+        >
+    </div>
+
+    <div id="dictionary-list-status" class="dictionary-status"></div>
+
+    <div class="dictionary-table-wrapper">
+        <table class="dictionary-table">
+            <thead>
+                <tr>
+                    <th>Term</th>
+                    <th>Usage Count</th>
+                    <th>Registered At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="dictionary-terms-list">
+                <tr>
+                    <td colspan="4" class="dictionary-empty">
+                        Loading...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p id="dictionary-result-count" class="dictionary-result-count"></p>
+</section>
+
+<!-- Edit Term -->
+<section
+    id="dictionary-edit-container"
+    class="dictionary-edit-container"
+    hidden
+>
+    <h3 class="panel-title">Edit Term</h3>
+
+    <form id="dictionary-edit-form">
+        <input type="hidden" id="edit-term-id">
+
+        <div class="dictionary-form-field">
+            <label for="edit-term">Term</label>
+            <input
+                type="text"
+                id="edit-term"
+                maxlength="200"
+                required
+            >
+        </div>
+
+        <div class="dictionary-edit-actions">
+            <button type="submit" class="button-primary">
+                Save Changes
+            </button>
+
+            <button
+                type="button"
+                id="cancel-edit-term"
+                class="button-secondary"
+            >
+                Cancel
+            </button>
+        </div>
+    </form>
+
+    <div id="dictionary-edit-status" class="dictionary-status"></div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script
+    src="{{ url_for('static', filename='js/dictionary.js') }}"
+    defer
+></script>
 {% endblock %}

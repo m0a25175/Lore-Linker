@@ -688,3 +688,328 @@ body {
     border-color: var(--accent);
     box-shadow: 0 0 0 2px rgba(214, 185, 110, 0.12);
 }
+
+
+/* ==============================
+   Dictionary Management
+============================== */
+
+.dictionary-overview {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.dictionary-stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 22px 24px;
+
+    background: linear-gradient(145deg, #20334F, #1B2D4D);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+.dictionary-stat-label {
+    color: var(--muted-text);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+.dictionary-stat-card strong {
+    color: var(--accent);
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.dictionary-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.dictionary-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.dictionary-form-field label {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dictionary-form-field input {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+
+    background: #111D31;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+
+    color: var(--text);
+    font-size: 14px;
+}
+
+.dictionary-form-field input:focus,
+.dictionary-search:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(214, 185, 110, 0.12);
+}
+
+.dictionary-form .button-primary {
+    min-height: 43px;
+}
+
+.dictionary-list-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.dictionary-list-header .panel-title {
+    margin-bottom: 8px;
+}
+
+.dictionary-search {
+    width: 260px;
+    max-width: 100%;
+    padding: 11px 13px;
+
+    background: #111D31;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+
+    color: var(--text);
+    font-size: 13px;
+}
+
+.dictionary-search::placeholder {
+    color: #74839A;
+}
+
+.dictionary-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.dictionary-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.dictionary-table th {
+    padding: 14px 12px;
+
+    color: var(--accent);
+    background: rgba(16, 24, 39, 0.45);
+
+    border-bottom: 1px solid var(--border);
+
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+.dictionary-table td {
+    padding: 15px 12px;
+
+    color: var(--muted-text);
+    border-bottom: 1px solid rgba(52, 67, 91, 0.65);
+
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.dictionary-table tbody tr:hover {
+    background: rgba(214, 185, 110, 0.035);
+}
+
+.dictionary-term-name {
+    color: var(--text) !important;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.dictionary-usage-badge {
+    display: inline-block;
+    min-width: 32px;
+    padding: 5px 9px;
+
+    border-radius: 12px;
+
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.dictionary-usage-badge.used {
+    color: #A4D5B2;
+    background: rgba(88, 157, 109, 0.16);
+}
+
+.dictionary-usage-badge.unused {
+    color: var(--muted-text);
+    background: rgba(155, 169, 188, 0.12);
+}
+
+.dictionary-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.dictionary-actions button {
+    padding: 7px 12px;
+}
+
+.dictionary-empty {
+    padding: 32px 12px !important;
+    color: var(--muted-text);
+    text-align: center;
+}
+
+.dictionary-result-count {
+    margin-top: 16px !important;
+    font-size: 12px !important;
+}
+
+.dictionary-status {
+    min-height: 20px;
+    margin-top: 12px;
+
+    color: var(--muted-text);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.dictionary-status.success {
+    color: #8FC9A3;
+}
+
+.dictionary-status.error {
+    color: #E58B8B;
+}
+
+.dictionary-status.loading {
+    color: var(--accent);
+}
+
+.dictionary-edit-container {
+    padding: 24px;
+
+    background: linear-gradient(145deg, #20334F, #1B2D4D);
+    border: 1px solid var(--border-highlight);
+    border-radius: 8px;
+}
+
+.dictionary-edit-container[hidden] {
+    display: none;
+}
+
+.dictionary-edit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .dictionary-overview {
+        gap: 10px;
+    }
+
+    .dictionary-stat-card {
+        padding: 16px;
+    }
+
+    .dictionary-stat-card strong {
+        font-size: 26px;
+    }
+
+    .dictionary-list-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .dictionary-search {
+        width: 100%;
+    }
+}
+
+@media (max-width: 540px) {
+    .dictionary-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .dictionary-form {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .dictionary-form .button-primary {
+        width: 100%;
+    }
+
+    .dictionary-table {
+        min-width: 620px;
+    }
+}
+
+/* ==============================
+   Dictionary Candidate Collection
+============================== */
+
+.dictionary-candidate-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0;
+}
+
+.dictionary-candidate-actions button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+#dictionary-candidates-list td:first-child {
+    width: 70px;
+    text-align: center;
+}
+
+#dictionary-candidates-list input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+#dictionary-candidates-list td:nth-child(3) {
+    font-variant-numeric: tabular-nums;
+}
+
+#dictionary-candidate-container {
+    margin-top: 22px;
+}
+
+#dictionary-candidate-container[hidden] {
+    display: none;
+}
+
+#dictionary-candidate-count {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}

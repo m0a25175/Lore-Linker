@@ -17,6 +17,22 @@ from lore_linker.services.story_manager import (
     delete_story,
 )
 
+from lore_linker.services.dictionary_manager import (
+    get_dictionary_terms,
+    get_dictionary_term_by_id,
+    add_dictionary_term,
+    update_dictionary_term,
+    delete_dictionary_term,
+    get_dictionary_term_usage_count,
+    get_dictionary_overview,
+    get_dictionary_overview,
+    add_dictionary_terms_bulk,
+)
+
+from lore_linker.services.dictionary_collector import (
+    collect_dictionary_candidates,
+)
+
 def create_app():
     app = Flask(__name__)
 
@@ -201,6 +217,176 @@ def create_app():
                 "success": False,
                 "error": str(error),
             }), 400
+
+    @app.route("/api/dictionary/candidates", methods=["GET"])
+    def list_dictionary_candidates():
+        try:
+            result = collect_dictionary_candidates()
+
+            return jsonify(result), 200
+
+        except RuntimeError as error:
+            return jsonify({
+                "success": False,
+                "error": str(error),
+            }), 500
+
+        except Exception:
+            app.logger.exception(
+                "Failed to collect dictionary candidates."
+            )
+
+            return jsonify({
+                "success": False,
+                "error": "Failed to collect dictionary candidates.",
+            }), 500
+
+    @app.route(
+        "/api/dictionary/candidates/register",
+        methods=["POST"],
+    )
+    def register_dictionary_candidates():
+        data = request.get_json(silent=True) or {}
+        terms = data.get("terms")
+
+        if not isinstance(terms, list):
+            return jsonify({
+                "success": False,
+                "error": "Terms must be provided as a list.",
+            }), 400
+
+        if len(terms) == 0:
+            return jsonify({
+                "success": False,
+                "error": "Please select at least one term.",
+            }), 400
+
+        if len(terms) > 1000:
+            return jsonify({
+                "success": False,
+                "error": "You can register up to 1000 terms at once.",
+            }), 400
+
+        try:
+            result = add_dictionary_terms_bulk(terms)
+
+            return jsonify({
+                "success": True,
+                **result,
+            }), 200
+
+        except ValueError as error:
+            return jsonify({
+                "success": False,
+                "error": str(error),
+            }), 400
+
+    @app.route("/api/dictionary/terms", methods=["GET"])
+    def list_dictionary_terms():
+        terms = get_dictionary_terms()
+
+        return jsonify({
+            "success": True,
+            "terms": terms,
+        })
+
+    @app.route("/api/dictionary/terms", methods=["POST"])
+    def create_dictionary_term():
+        data = request.get_json(silent=True) or {}
+
+        try:
+            term = add_dictionary_term(data.get("term"))
+
+            return jsonify({
+                "success": True,
+                "term": term,
+            }), 201
+
+        except ValueError as error:
+            return jsonify({
+                "success": False,
+                "error": str(error),
+            }), 400
+
+    @app.route("/api/dictionary/terms/<int:term_id>", methods=["GET"])
+    def retrieve_dictionary_term(term_id):
+        term = get_dictionary_term_by_id(term_id)
+
+        if term is None:
+            return jsonify({
+                "success": False,
+                "error": "Dictionary term not found.",
+            }), 404
+
+        term["usage_count"] = get_dictionary_term_usage_count(term_id)
+
+        return jsonify({
+            "success": True,
+            "term": term,
+        })
+
+    @app.route("/api/dictionary/terms/<int:term_id>", methods=["PUT"])
+    def edit_dictionary_term(term_id):
+        data = request.get_json(silent=True) or {}
+
+        try:
+            term = update_dictionary_term(
+                term_id=term_id,
+                term=data.get("term"),
+            )
+
+            return jsonify({
+                "success": True,
+                "term": term,
+            }), 200
+
+        except ValueError as error:
+            status_code = (
+                404
+                if str(error).startswith("Dictionary term not found:")
+                else 400
+            )
+
+            return jsonify({
+                "success": False,
+                "error": str(error),
+            }), status_code
+
+    @app.route("/api/dictionary/terms/<int:term_id>", methods=["DELETE"])
+    def remove_dictionary_term(term_id):
+        term = get_dictionary_term_by_id(term_id)
+
+        if term is None:
+            return jsonify({
+                "success": False,
+                "error": "Dictionary term not found.",
+            }), 404
+
+        usage_count = get_dictionary_term_usage_count(term_id)
+
+        deleted = delete_dictionary_term(term_id)
+
+        if not deleted:
+            return jsonify({
+                "success": False,
+                "error": "Dictionary term could not be deleted.",
+            }), 500
+
+        return jsonify({
+            "success": True,
+            "message": "Dictionary term deleted successfully.",
+            "deleted_term": term["term"],
+            "deleted_usage_count": usage_count,
+        }), 200
+
+    @app.route("/api/dictionary/overview", methods=["GET"])
+    def dictionary_overview():
+        overview = get_dictionary_overview()
+
+        return jsonify({
+            "success": True,
+            "overview": overview,
+        })
 
     @app.route("/dictionary")
     def dictionary():
