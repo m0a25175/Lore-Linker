@@ -10,29 +10,202 @@ Network Analysis
 
 {% block content %}
 
-<div class="panel">
-  <h3 class="panel-title">Champion Selection</h3>
+<div class="network-layout">
 
-  <p>
-    Select the champions whose stories you want to analyze.
-    All eligible registered stories associated with the selected champions will be included.
-  </p>
+  <section class="panel">
+    <div class="network-section-heading">
+      <div>
+        <h3 class="panel-title">Champion Selection</h3>
+        <p class="network-description">
+          Select the champions whose registered English stories will be analyzed.
+        </p>
+      </div>
+
+      <span id="network-selected-count" class="network-count">
+        0 selected
+      </span>
+    </div>
+
+    <div class="network-selection-toolbar">
+      <input
+        type="search"
+        id="champion-search"
+        class="network-search"
+        placeholder="Search champions..."
+        aria-label="Search champions"
+      >
+
+      <button type="button" id="select-all-champions"
+        class="button-secondary">
+        Select All
+      </button>
+
+      <button type="button" id="clear-all-champions"
+        class="button-secondary">
+        Clear All
+      </button>
+    </div>
+
+    <div id="champion-selection-list" class="champion-selection-list">
+      {% for champion in champions %}
+      <label class="champion-option"
+        data-search="{{ champion.name_en }} {{ champion.name_ja }}">
+        <input
+          type="checkbox"
+          class="champion-checkbox"
+          value="{{ champion.champion_id }}"
+        >
+        <span class="champion-option-name">
+          {{ champion.name_en }}
+        </span>
+        <span class="champion-option-ja">
+          {{ champion.name_ja }}
+        </span>
+      </label>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3 class="panel-title">Analysis Settings</h3>
+
+    <div class="network-settings-row">
+      <label for="analysis-threshold">
+        Relationship Score Threshold
+      </label>
+
+      <div class="network-threshold-control">
+        <input
+          type="number"
+          id="analysis-threshold"
+          min="0"
+          max="100"
+          step="0.1"
+          value="10"
+        >
+        <span>%</span>
+      </div>
+    </div>
+
+    <p class="network-description">
+      Only relationships with a score equal to or higher than this threshold
+      will be displayed.
+    </p>
+
+    <div class="network-action-buttons">
+      <button type="button" id="run-analysis"
+        class="button-primary">
+        Run Analysis
+      </button>
+
+      <button type="button" id="export-analysis"
+        class="button-secondary">
+        Export JSON
+      </button>
+
+      <button type="button" id="export-network-png"
+        class="button-secondary" disabled>
+        Export Network PNG
+      </button>
+
+      <button type="button" id="import-analysis"
+        class="button-secondary">
+        Import JSON
+      </button>
+
+      <input
+        type="file"
+        id="analysis-file"
+        accept=".json,application/json"
+        hidden
+      >
+    </div>
+
+    <p id="analysis-status"
+      class="network-status"
+      role="status"
+      aria-live="polite">
+      Select champions and run the analysis.
+    </p>
+  </section>
+
+  <section class="panel">
+    <div class="network-section-heading">
+      <div>
+        <h3 class="panel-title">Relationship Network</h3>
+        <p class="network-description">
+          Each node represents a champion. Lines represent detected relationships.
+        </p>
+      </div>
+    </div>
+
+    <div id="network-summary" class="network-summary">
+      <div class="network-stat">
+        <span>Champions</span>
+        <strong id="network-node-count">0</strong>
+      </div>
+      <div class="network-stat">
+        <span>Relationships</span>
+        <strong id="network-edge-count">0</strong>
+      </div>
+      <div class="network-stat">
+        <span>Threshold</span>
+        <strong id="network-result-threshold">-</strong>
+      </div>
+    </div>
+
+    <div id="network-empty" class="network-empty">
+      No analysis result is available.
+    </div>
+
+    <div id="network-visual-container" class="network-visual-container"
+      hidden>
+      <svg
+        id="network-svg"
+        viewBox="0 0 1000 680"
+        role="img"
+        aria-label="Champion relationship network"
+      ></svg>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3 class="panel-title">Relationship Details</h3>
+
+    <p id="network-selection-info" class="network-selection-info">
+        Click a champion node to see its relationships and shared keywords.
+    </p>
+
+    <div class="network-table-wrapper">
+      <table class="network-table">
+        <thead>
+          <tr>
+            <th>Champion A</th>
+            <th>Champion B</th>
+            <th>Score</th>
+            <th>Common Words (S)</th>
+            <th>Mutual Appearance (D)</th>
+            <th>Shared Terms</th>
+          </tr>
+        </thead>
+        <tbody id="network-edges-body">
+          <tr>
+            <td colspan="6" class="network-table-empty">
+              No relationships to display.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
 </div>
 
-<div class="panel">
-  <h3 class="panel-title">Analysis Settings</h3>
+{% endblock %}
 
-  <p>
-    Configure the relationship score threshold before running the analysis.
-  </p>
-</div>
-
-<div class="panel">
-  <h3 class="panel-title">Relationship Network</h3>
-
-  <p>
-    The champion co-occurrence network will be displayed here after analysis.
-  </p>
-</div>
-
+{% block scripts %}
+<script
+  src="{{ url_for('static', filename='js/network.js') }}"
+  defer
+></script>
 {% endblock %}

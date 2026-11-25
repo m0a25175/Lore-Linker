@@ -33,6 +33,11 @@ from lore_linker.services.dictionary_collector import (
     collect_dictionary_candidates,
 )
 
+from lore_linker.services.analysis_engine import (
+    analyze_network,
+    get_latest_analysis,
+)
+
 def create_app():
     app = Flask(__name__)
 
@@ -394,6 +399,108 @@ def create_app():
 
     @app.route("/network")
     def network():
-        return render_template("network.html")
+        champions = get_registered_champions()
+
+        return render_template(
+            "network.html",
+            champions=champions,
+        )
+
+    @app.route("/api/analysis/run", methods=["POST"])
+    def run_analysis():
+        data = request.get_json(silent=True) or {}
+
+        try:
+            result = analyze_network(
+                selected_champions=data.get("selected_champions"),
+                threshold=data.get("threshold", 10),
+            )
+
+            return jsonify(result), 200
+
+        except ValueError as error:
+            return jsonify({
+                "success": False,
+                "error": str(error),
+            }), 400
+
+        except Exception:
+            app.logger.exception("Analysis execution failed.")
+
+            return jsonify({
+                "success": False,
+                "error": "Analysis execution failed.",
+            }), 500
+
+    @app.route("/api/analysis/state", methods=["GET"])
+    def analysis_state():
+        state = get_latest_analysis()
+
+        return jsonify({
+            "success": True,
+            "state": state,
+        }), 200
+
+    @app.route("/api/analysis/export", methods=["GET"])
+    def export_analysis():
+        state = get_latest_analysis()
+
+        if state is None or state["result"] is None:
+            return jsonify({
+                "success": False,
+                "error": "No analysis result is available.",
+            }), 404
+
+        return jsonify({
+            "success": True,
+            "format": "lore-linker-analysis",
+            "version": 1,
+            "selected_champions": state["selected_champions"],
+            "threshold": state["threshold"],
+            "result": state["result"],
+            "updated_at": state["updated_at"],
+        }), 200
+
+    @app.route("/api/analysis/import", methods=["POST"])
+    def import_analysis():
+        data = request.get_json(silent=True) or {}
+
+        if data.get("format") != "lore-linker-analysis":
+            return jsonify({
+                "success": False,
+                "error": "Unsupported analysis file format.",
+            }), 400
+
+        if data.get("version") != 1:
+            return jsonify({
+                "success": False,
+                "error": "Unsupported analysis file version.",
+            }), 400
+
+        try:
+            result = analyze_network(
+                selected_champions=data.get("selected_champions"),
+                threshold=data.get("threshold", 10),
+            )
+
+            return jsonify({
+                "success": True,
+                "message": "Analysis conditions restored and analysis completed.",
+                "result": result,
+            }), 200
+
+        except ValueError as error:
+            return jsonify({
+                "success": False,
+                "error": str(error),
+            }), 400
+
+        except Exception:
+            app.logger.exception("Analysis import failed.")
+
+            return jsonify({
+                "success": False,
+                "error": "Failed to restore analysis.",
+            }), 500
 
     return app
